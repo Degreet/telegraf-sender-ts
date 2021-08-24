@@ -6,7 +6,7 @@ export interface Context extends TelegrafContext {
     send: (text: string, extra?: ExtraSendMessage) => Promise<Message | void>
     sendTo: (userId: number, text: string, extra?: ExtraSendMessage) => Promise<Message | void>
     edit: (text: string, extra?: ExtraEditMessage) => Promise<Message | boolean | void>
-    del: () => Promise<boolean | void>
+    del: (msgId?: number) => Promise<boolean | void>
     alert: (text: string) => Promise<boolean | void>
     toast: (text: string) => Promise<boolean | void>
     broadcast: (users: number[], callback?: Function, action?: (userId: number) => any) => boolean
