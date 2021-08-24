@@ -1,0 +1,36 @@
+{
+  "name": "telegraf-sender-ts",
+  "version": "1.0.1",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "npm run build && ts-node src/test.ts",
+    "build": "tsc -p ."
+  },
+  "keywords": [
+    "telegraf",
+    "telegraf-sender",
+    "sender",
+    "telegram",
+    "bot"
+  ],
+  "author": "Degreet <degreetpro@gmail.com>",
+  "license": "ISC",
+  "description": "Simplified messaging in Telegraf v3.39 (TypeScript)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Degreet/telegraf-sender-ts"
+  },
+  "homepage": "https://github.com/Degreet/telegraf-sender-ts#readme",
+  "dependencies": {
+    "telegraf": "3.39"
+  },
+  "devDependencies": {
+    "@types/config": "^0.0.39",
+    "@types/node": "^16.7.1",
+    "config": "^3.3.6",
+    "nodemon": "^2.0.12",
+    "telegraf-markup4-ts": "^1.0.6",
+    "ts-node": "^10.2.1"
+  }
+}
