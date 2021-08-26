@@ -1,5 +1,6 @@
 import { TelegrafContext } from "telegraf/typings/context";
 import { ExtraEditMessage, ExtraSendMessage, Message } from 'telegraf/typings/telegram-types'
+import { SceneContextMessageUpdate } from 'telegraf/typings/stage'
 
 export interface Context extends TelegrafContext {
   msg?: {
@@ -12,6 +13,8 @@ export interface Context extends TelegrafContext {
     broadcast: (users: number[], callback?: Function, action?: (userId: number) => any) => boolean
   }
 }
+
+export interface SceneContext extends Context, SceneContextMessageUpdate {}
 
 export function setupSender(ctx: Context, next: Function): void {
   ctx.msg = {
