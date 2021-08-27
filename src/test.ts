@@ -1,15 +1,19 @@
 import { ExtraReplyMarkupInlineKeyboard } from 'telegraf/typings/telegram-types'
-import { ContextWithMsg, setupSender } from './index'
+import { Sender, setupSender } from './index'
 import { Telegraf } from 'telegraf'
 import M from 'telegraf-markup4-ts'
 import config from 'config'
+import { SceneContextMessageUpdate } from 'telegraf/typings/stage'
+import { TelegrafContext } from 'telegraf/typings/context'
+
+type Context = SceneContextMessageUpdate & TelegrafContext & Sender
 
 const token: string = config.get<string>('botToken')
-const bot: Telegraf<ContextWithMsg> = new Telegraf(token)
+const bot: Telegraf<Context> = new Telegraf(token)
 
 bot.use(setupSender)
 
-bot.command('start', (ctx: ContextWithMsg): void => {
+bot.command('start', (ctx: Context): void => {
   const markup: ExtraReplyMarkupInlineKeyboard = M.keyboard.inline([
     [M.button.callback('Change text', 'change')],
     [M.button.callback('Delete', 'delete')],
@@ -20,7 +24,7 @@ bot.command('start', (ctx: ContextWithMsg): void => {
   ctx.msg?.send('Wait...', markup)
 })
 
-bot.action('change', (ctx: ContextWithMsg): void => {
+bot.action('change', (ctx: Context): void => {
   try {
     ctx.msg?.edit('Working!')
   } catch (e) {
@@ -29,7 +33,7 @@ bot.action('change', (ctx: ContextWithMsg): void => {
   }
 })
 
-bot.action('delete', (ctx: ContextWithMsg): void => {
+bot.action('delete', (ctx: Context): void => {
   try {
     ctx.msg?.del()
   } catch (e) {
@@ -38,7 +42,7 @@ bot.action('delete', (ctx: ContextWithMsg): void => {
   }
 })
 
-bot.action('toast', (ctx: ContextWithMsg): void => {
+bot.action('toast', (ctx: Context): void => {
   try {
     ctx.msg?.toast('Toast')
   } catch (e) {
@@ -47,7 +51,7 @@ bot.action('toast', (ctx: ContextWithMsg): void => {
   }
 })
 
-bot.action('alert', (ctx: ContextWithMsg): void => {
+bot.action('alert', (ctx: Context): void => {
   try {
     ctx.msg?.alert('Alert')
   } catch (e) {
@@ -56,7 +60,7 @@ bot.action('alert', (ctx: ContextWithMsg): void => {
   }
 })
 
-bot.on('message', (ctx: ContextWithMsg): void => {
+bot.on('message', (ctx: Context): void => {
   try {
     const endCallback: Function = (): void => {
       console.log('Ended!')
