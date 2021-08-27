@@ -4,7 +4,9 @@
 
 ```typescript
 import { Telegraf } from 'telegraf'
-import { Context, setupSender } from 'telegraf-sender-ts'
+import { Sender, setupSender } from 'telegraf-sender-ts'
+import { TelegrafContext } from 'telegraf/typings/context'
+type Context = TelegrafContext & Sender
 
 const bot: Telegraf<Context> = new Telegraf(token)
 bot.use(setupSender)
