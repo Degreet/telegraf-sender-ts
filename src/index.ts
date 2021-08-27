@@ -2,7 +2,7 @@ import { TelegrafContext } from "telegraf/typings/context";
 import { ExtraEditMessage, ExtraSendMessage, Message } from 'telegraf/typings/telegram-types'
 import { SceneContextMessageUpdate } from 'telegraf/typings/stage'
 
-export interface Context extends TelegrafContext {
+export interface ContextWithMsg extends TelegrafContext {
   msg?: {
     send: (text: string, extra?: ExtraSendMessage) => Promise<Message | void>
     sendTo: (userId: number, text: string, extra?: ExtraSendMessage) => Promise<Message | void>
@@ -14,9 +14,9 @@ export interface Context extends TelegrafContext {
   }
 }
 
-export interface SceneContext extends Context, SceneContextMessageUpdate {}
+export interface SceneContext extends ContextWithMsg, SceneContextMessageUpdate {}
 
-export function setupSender(ctx: Context, next: Function): void {
+export function setupSender(ctx: ContextWithMsg, next: Function): void {
   ctx.msg = {
     send(text: string, extra?: ExtraSendMessage): Promise<Message | void> {
       return ctx

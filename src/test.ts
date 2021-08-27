@@ -1,15 +1,15 @@
 import { ExtraReplyMarkupInlineKeyboard } from 'telegraf/typings/telegram-types'
-import { Context, setupSender } from './index'
+import { ContextWithMsg, setupSender } from './index'
 import { Telegraf } from 'telegraf'
 import M from 'telegraf-markup4-ts'
 import config from 'config'
 
 const token: string = config.get<string>('botToken')
-const bot: Telegraf<Context> = new Telegraf(token)
+const bot: Telegraf<ContextWithMsg> = new Telegraf(token)
 
 bot.use(setupSender)
 
-bot.command('start', (ctx: Context): void => {
+bot.command('start', (ctx: ContextWithMsg): void => {
   const markup: ExtraReplyMarkupInlineKeyboard = M.keyboard.inline([
     [M.button.callback('Change text', 'change')],
     [M.button.callback('Delete', 'delete')],
@@ -20,7 +20,7 @@ bot.command('start', (ctx: Context): void => {
   ctx.msg?.send('Wait...', markup)
 })
 
-bot.action('change', (ctx: Context): void => {
+bot.action('change', (ctx: ContextWithMsg): void => {
   try {
     ctx.msg?.edit('Working!')
   } catch (e) {
@@ -29,7 +29,7 @@ bot.action('change', (ctx: Context): void => {
   }
 })
 
-bot.action('delete', (ctx: Context): void => {
+bot.action('delete', (ctx: ContextWithMsg): void => {
   try {
     ctx.msg?.del()
   } catch (e) {
@@ -38,7 +38,7 @@ bot.action('delete', (ctx: Context): void => {
   }
 })
 
-bot.action('toast', (ctx: Context): void => {
+bot.action('toast', (ctx: ContextWithMsg): void => {
   try {
     ctx.msg?.toast('Toast')
   } catch (e) {
@@ -47,7 +47,7 @@ bot.action('toast', (ctx: Context): void => {
   }
 })
 
-bot.action('alert', (ctx: Context): void => {
+bot.action('alert', (ctx: ContextWithMsg): void => {
   try {
     ctx.msg?.alert('Alert')
   } catch (e) {
@@ -56,7 +56,7 @@ bot.action('alert', (ctx: Context): void => {
   }
 })
 
-bot.on('message', (ctx: Context): void => {
+bot.on('message', (ctx: ContextWithMsg): void => {
   try {
     const endCallback: Function = (): void => {
       console.log('Ended!')
