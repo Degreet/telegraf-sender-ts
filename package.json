@@ -16,21 +16,20 @@
   ],
   "author": "Degreet <degreetpro@gmail.com>",
   "license": "ISC",
-  "description": "Simplified messaging in Telegraf v3.39 (TypeScript)",
+  "description": "Simplified messaging in Telegraf v4.12 (TypeScript)",
   "repository": {
     "type": "git",
     "url": "https://github.com/Degreet/telegraf-sender-ts"
   },
   "homepage": "https://github.com/Degreet/telegraf-sender-ts#readme",
   "dependencies": {
-    "telegraf": "3.39"
+    "telegraf": "4.12"
   },
   "devDependencies": {
     "@types/config": "^0.0.39",
     "@types/node": "^16.7.1",
     "config": "^3.3.6",
     "nodemon": "^2.0.12",
-    "telegraf-markup4-ts": "^1.0.6",
     "ts-node": "^10.2.1"
   }
 }
