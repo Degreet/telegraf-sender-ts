@@ -1,12 +1,11 @@
-import { ExtraReplyMarkupInlineKeyboard } from 'telegraf/typings/telegram-types'
+import config from 'config'
+import { Markup } from 'telegraf';
 import { Sender, setupSender } from './index'
 import { Telegraf } from 'telegraf'
-import M from 'telegraf-markup4-ts'
-import config from 'config'
-import { SceneContextMessageUpdate } from 'telegraf/typings/stage'
-import { TelegrafContext } from 'telegraf/typings/context'
+import { SceneContext } from 'telegraf/typings/scenes';
+import { Context as TelegrafContext } from 'telegraf/typings/context';
 
-type Context = SceneContextMessageUpdate & TelegrafContext & Sender
+type Context = SceneContext & TelegrafContext & Sender
 
 const token: string = config.get<string>('botToken')
 const bot: Telegraf<Context> = new Telegraf(token)
@@ -14,14 +13,16 @@ const bot: Telegraf<Context> = new Telegraf(token)
 bot.use(setupSender)
 
 bot.command('start', (ctx: Context): void => {
-  const markup: ExtraReplyMarkupInlineKeyboard = M.keyboard.inline([
-    [M.button.callback('Change text', 'change')],
-    [M.button.callback('Delete', 'delete')],
-    [M.button.callback('Toast', 'toast')],
-    [M.button.callback('Alert', 'alert')],
-  ])
+  const extra = {
+    ...Markup.inlineKeyboard([
+      [Markup.button.callback('Change text', 'change')],
+      [Markup.button.callback('Delete', 'delete')],
+      [Markup.button.callback('Toast', 'toast')],
+      [Markup.button.callback('Alert', 'alert')],
+    ])
+  };
 
-  ctx.msg?.send('Wait...', markup)
+  ctx.msg?.send('Wait...', extra)
 })
 
 bot.action('change', (ctx: Context): void => {
