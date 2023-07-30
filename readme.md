@@ -3,13 +3,13 @@
 Чтобы начать работу с модулем, Вам необходимо импортировать и инициализировать его:
 
 ```typescript
-import { Telegraf } from 'telegraf'
-import { Sender, setupSender } from 'telegraf-sender-ts'
-import { TelegrafContext } from 'telegraf/typings/context'
-type Context = TelegrafContext & Sender
+import { Telegraf } from 'telegraf';
+import { Sender, setupSender } from 'telegraf-sender-ts';
+import { Context as TelegrafContext } from 'telegraf/typings/context';
+type Context = TelegrafContext & Sender;
 
-const bot: Telegraf<Context> = new Telegraf(token)
-bot.use(setupSender)
+const bot: Telegraf<Context> = new Telegraf(token);
+bot.use(setupSender);
 ```
 
 # Отправка сообщений
@@ -17,13 +17,13 @@ bot.use(setupSender)
 ### Текущему пользователю
 
 ```
-ctx.msg?.send(text: string, extra: ExtraSendMessage)
+ctx.msg?.send(text: string, extra: ExtraReplyMessage)
 ```
 
 ### Пользователю с другим id
 
 ```
-ctx.msg?.sendTo(userId: number, text: string, extra: ExtraSendMessage)
+ctx.msg?.sendTo(userId: number, text: string, extra: ExtraReplyMessage)
 ```
 
 # Всплывающие уведомления
@@ -31,13 +31,13 @@ ctx.msg?.sendTo(userId: number, text: string, extra: ExtraSendMessage)
 ### Alert
 
 ```typescript
-ctx.msg?.alert('Пример модального окна')
+ctx.msg?.alert('Пример модального окна');
 ```
 
 ### Toast
 
 ```typescript
-ctx.msg?.toast('Всплывающее уведомление')
+ctx.msg?.toast('Всплывающее уведомление');
 ```
 
 # Изменение сообщений
@@ -45,7 +45,7 @@ ctx.msg?.toast('Всплывающее уведомление')
 Для этого воспользуйтесь методом edit:
 
 ```
-ctx.msg?.edit(text: string, extra: ExtraEditMessage)
+ctx.msg?.edit(text: string, extra: ExtraEditMessageText)
 ```
 
 # Удаление сообщений
@@ -53,7 +53,7 @@ ctx.msg?.edit(text: string, extra: ExtraEditMessage)
 Для этого воспользуйтесь методом del:
 
 ```typescript
-ctx.msg?.del()
+ctx.msg?.del();
 ```
 
 # Рассылка сообщений
@@ -61,30 +61,30 @@ ctx.msg?.del()
 Для рассылки сообщений Вам нужно подготовить массив с айди пользователей, которым нужно сделать рассылку:
 
 ```typescript
-const users: number[] = [id1, id2, id3]
+const users: number[] = [id1, id2, id3];
 ```
 
 Далее сделать саму рассылку:
 
 ```typescript
-ctx.msg?.broadcast(users)
+ctx.msg?.broadcast(users);
 ```
 
 Вам не нужно передавать текст или extra в метод, т.к. эти данные соберёт сам метод из **ctx.message**. Также Вы можете передать в этот метод callback и узнать когда рассылка будет завершена:
 
 ```typescript
-const callback: Function = (): void => console.log('Рассылка завершена!')
-ctx.msg?.broadcast(users, callback)
+const callback: Function = (): void => console.log('Рассылка завершена!');
+ctx.msg?.broadcast(users, callback);
 ```
 
 И ещё Вы можете выполнять какие-то действия для каждого пользователя, которому будет отправлена рассылка:
 
 ```typescript
-const callback: Function = (): void => console.log('Рассылка завершена!')
-const action: (userId: number) => any = (userId: number) => console.log(`Отправка пользователю ${userId}`)
-ctx.msg?.broadcast(users, callback, action)
+const callback: Function = (): void => console.log('Рассылка завершена!');
+const action: (userId: number) => any = (userId: number) => console.log(`Отправка пользователю ${userId}`);
+ctx.msg?.broadcast(users, callback, action);
 ```
 
 # Информация
 
-Рассылка сообщений с форматом **30 сообщений в секунду**. Модуль разработан для библиотеки Telegraf версии 3.39 на TypeScript. Больше примеров Вы можете найти в файле **test.js**
+Рассылка сообщений с форматом **30 сообщений в секунду**. Модуль разработан для библиотеки Telegraf версии 4.12 на TypeScript. Больше примеров Вы можете найти в файле **test.js**

@@ -25,7 +25,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -72,7 +72,7 @@ function setupSender(ctx, next) {
         },
         alert: function (text) {
             return ctx
-                .answerCbQuery(text, true)
+                .answerCbQuery(text)
                 .catch(function (e) { return console.warn('msg.alert error', e); });
         },
         toast: function (text) {
@@ -110,11 +110,12 @@ function setupSender(ctx, next) {
                                 if (!users || users.length <= 0)
                                     return [2 /*return*/, end()];
                                 return [4 /*yield*/, Promise.all(users.map(function (userId) { return __awaiter(_this, void 0, void 0, function () {
-                                        return __generator(this, function (_a) {
-                                            switch (_a.label) {
-                                                case 0: return [4 /*yield*/, ctx.telegram.sendCopy(userId, ctx.message).catch(function () { })];
+                                        var _a;
+                                        return __generator(this, function (_b) {
+                                            switch (_b.label) {
+                                                case 0: return [4 /*yield*/, ctx.telegram.copyMessage(userId, userId, ((_a = ctx.message) === null || _a === void 0 ? void 0 : _a.message_id) || 0).catch(function () { })];
                                                 case 1:
-                                                    _a.sent();
+                                                    _b.sent();
                                                     if (action)
                                                         action(userId);
                                                     return [2 /*return*/];

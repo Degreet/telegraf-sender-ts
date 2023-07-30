@@ -1,11 +1,12 @@
-import { TelegrafContext } from "telegraf/typings/context";
-import { ExtraEditMessage, ExtraSendMessage, Message } from 'telegraf/typings/telegram-types'
+import { Context } from 'telegraf/typings/context';
+import { ExtraEditMessageText, ExtraReplyMessage } from 'telegraf/typings/telegram-types';
+import { Message, Update } from 'telegraf/typings/core/types/typegram';
 
 export interface Sender {
   msg?: {
-    send: (text: string, extra?: ExtraSendMessage) => Promise<Message | void>
-    sendTo: (userId: number, text: string, extra?: ExtraSendMessage) => Promise<Message | void>
-    edit: (text: string, extra?: ExtraEditMessage) => Promise<Message | boolean | void>
+    send: (text: string, extra?: ExtraReplyMessage) => Promise<Message | void>
+    sendTo: (userId: number, text: string, extra?: ExtraReplyMessage) => Promise<Message | void>
+    edit: (text: string, extra?: ExtraEditMessageText) => Promise<boolean | (Update.Edited & Message.TextMessage) | void>
     del: (msgId?: number) => Promise<boolean | void>
     alert: (text: string) => Promise<boolean | void>
     toast: (text: string) => Promise<boolean | void>
@@ -13,19 +14,19 @@ export interface Sender {
   }
 }
 
-export function setupSender(ctx: TelegrafContext & Sender, next: Function): void {
+export function setupSender(ctx: Context & Sender, next: Function): void {
   ctx.msg = {
-    send(text: string, extra?: ExtraSendMessage): Promise<Message | void> {
+    send(text: string, extra?: ExtraReplyMessage): Promise<Message.TextMessage | void> {
       return ctx
         .replyWithHTML(text, extra)
         .catch((e) => console.warn('msg.send error', e))
     },
-    sendTo(userId: number, text: string, extra?: ExtraSendMessage): Promise<Message | void> {
+    sendTo(userId: number, text: string, extra?: ExtraReplyMessage): Promise<Message.TextMessage | void> {
       return ctx.telegram
         .sendMessage(userId, text, { parse_mode: 'HTML', ...extra })
         .catch((e) => console.warn('msg.sendTo error', e))
     },
-    edit(text: string, extra?: ExtraEditMessage): Promise<Message | boolean | void> {
+    edit(text: string, extra?: ExtraEditMessageText): Promise<boolean | (Update.Edited & Message.TextMessage) | void> {
       return ctx
         .editMessageText(text, { parse_mode: 'HTML', ...extra })
         .catch((e) => console.warn('msg.edit error', e))
@@ -37,7 +38,7 @@ export function setupSender(ctx: TelegrafContext & Sender, next: Function): void
     },
     alert(text: string): Promise<boolean | void> {
       return ctx
-        .answerCbQuery(text, true)
+        .answerCbQuery(text)
         .catch((e) => console.warn('msg.alert error', e))
     },
     toast(text: string): Promise<boolean | void> {
@@ -69,7 +70,7 @@ export function setupSender(ctx: TelegrafContext & Sender, next: Function): void
 
         await Promise.all(
           users.map(async (userId: number): Promise<void> => {
-            await ctx.telegram.sendCopy(userId, ctx.message).catch(() => {})
+            await ctx.telegram.copyMessage(userId, userId, ctx.message?.message_id || 0).catch(() => {})
             if (action) action(userId)
           })
         )
